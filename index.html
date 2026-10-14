@@ -109,7 +109,7 @@ a { color: inherit; }
 .slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .slot .ph { font-weight: 900; line-height: 1.7; padding: 16px; letter-spacing: 0.08em; }
 .slot .ph small { display: block; font-weight: 500; color: var(--muted); letter-spacing: 0.04em; }
-.kv { aspect-ratio: 2 / 3; border: 6px solid #fff; border-radius: 26px; box-shadow: 10px 10px 0 var(--pink); transform: rotate(2deg); }
+.kv { aspect-ratio: 1749 / 2481; border: 6px solid #fff; border-radius: 26px; box-shadow: 10px 10px 0 var(--pink); transform: rotate(2deg); }
 .kv-wrap { position: relative; width: 100%; min-width: 0; }
 .stamp {
   position: absolute; top: -30px; right: -10px; z-index: 3; width: 128px; height: 128px; border-radius: 50%;
@@ -174,7 +174,9 @@ a { color: inherit; }
 .pill.no { background: transparent; color: var(--muted); border: 1.5px dashed var(--muted); }
 
 .pay-card { text-align: center; padding-block: clamp(32px, 6vw, 56px); }
-.pay-main { display: flex; justify-content: center; align-items: baseline; gap: 12px; font-weight: 900; }
+.pay-main { display: flex; justify-content: center; align-items: center; gap: 14px; font-weight: 900; }
+.pay-logo-box { display: inline-flex; background: #fff; border-radius: 18px; padding: 10px 24px; box-shadow: 0 4px 0 rgba(12, 27, 75, 0.12); }
+.pay-logo { display: block; width: min(230px, 52vw); height: auto; }
 .pay-name { font-size: clamp(2.4rem, 9vw, 3.6rem); line-height: 1.2; color: var(--blue); letter-spacing: 0.02em; }
 .pay-only { background: var(--pink); color: var(--ink); font-size: 1.05rem; padding: 0 16px; border-radius: 999px; line-height: 2; }
 .pay-note { margin-top: 14px; color: var(--muted); }
@@ -193,8 +195,8 @@ a { color: inherit; }
 /* ---------- footer ---------- */
 .site-footer { padding-block: 72px calc(40px + env(safe-area-inset-bottom, 0px)); text-align: center; }
 .site-footer .inner { display: grid; gap: 18px; justify-items: center; }
-.mascot { width: 84px; height: 84px; border-radius: 50%; border: 3px dashed #fff; display: grid; place-items: center; font-size: 0.7rem; font-weight: 900; line-height: 1.4; overflow: hidden; position: relative; }
-.mascot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.mascot { width: 110px; margin: 0 auto; display: block; }
+.mascot svg { width: 100%; height: auto; display: block; }
 .site-footer .links { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 22px; font-size: 0.92rem; }
 .site-footer small { opacity: 0.85; }
 
@@ -246,6 +248,17 @@ a { color: inherit; }
   .btn, .faq summary::after { transition: none; }
   .stamp, .stamp::before, .stamp-tap svg { animation: none; }
 }
+/* 配置図ポップアップ */
+.map-btn { font: inherit; font-weight: 900; color: var(--blue-deep); background: var(--pale); border: 0; border-radius: 999px; padding: 4px 14px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; line-height: 1.5; }
+.map-btn::after { content: "配置図を見る"; font-size: 0.72rem; font-weight: 700; color: #fff; background: var(--orange); border-radius: 999px; padding: 1px 9px; }
+.map-btn:hover { background: #fff; }
+.map-dialog { border: 0; padding: 0; background: transparent; max-width: min(94vw, 760px); width: 100%; max-height: 94vh; overflow: visible; }
+.map-dialog::backdrop { background: rgba(12, 27, 75, 0.6); }
+.map-box { background: #fff; border-radius: 22px; padding: 14px; max-height: 92vh; overflow: auto; position: relative; box-shadow: 0 8px 0 rgba(12,27,75,.25); }
+.map-box h3 { margin: 0 44px 8px 4px; font-size: 1rem; color: var(--ink); }
+.map-box img { display: block; width: 100%; height: auto; border-radius: 10px; border: 2px solid var(--line); }
+.map-box p { margin: 8px 4px 0; font-size: 0.8rem; color: var(--muted); }
+.map-close { position: absolute; top: 10px; right: 10px; width: 36px; height: 36px; border-radius: 50%; border: 0; background: var(--blue); color: #fff; font-size: 1.3rem; font-weight: 900; line-height: 1; cursor: pointer; }
 </style>
 
 </head>
@@ -278,7 +291,7 @@ a { color: inherit; }
         <p class="lead">パワーアップして今年も出店！</p>
         <dl class="facts">
           <div><dt>日時</dt><dd>2026年11月8日(日) 12:00〜17:00</dd></div>
-          <div><dt>スペース</dt><dd>Y-15,16</dd></div>
+          <div><dt>スペース</dt><dd><button class="map-btn" type="button">Y-15,16</button></dd></div>
           <div><dt>会場</dt><dd>東京ビッグサイト 南1-4ホール</dd></div>
         </dl>
         <div class="cta">
@@ -286,14 +299,13 @@ a { color: inherit; }
           <a class="btn line" href="#menu">お品書き</a>
         </div>
       </div>
-      <!-- KV: 縦長 2:3。<img src="kv.jpg" alt="キービジュアル"> を入れて .ph を削除 -->
       <div class="kv-wrap">
         <a class="stamp" href="https://studioluca.jp/flier202611" target="_blank" rel="noopener" aria-label="間違い探し実施中！(StudioLucaのサイトが開きます)">
           <svg class="stamp-lens" viewBox="0 0 48 48" aria-hidden="true"><circle cx="20" cy="20" r="13" fill="#fff" stroke="#0C1B4B" stroke-width="4.5"/><path d="M13 17a8 8 0 0 1 6-5" fill="none" stroke="#FF8A1F" stroke-width="3.5" stroke-linecap="round"/><path d="M30 30l12 12" stroke="#0C1B4B" stroke-width="7" stroke-linecap="round"/></svg>
           <b>間違い探し</b><span>実施中！</span>
           <i class="stamp-tap" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3 1.5l9.5 7.2-4.2.8 2.4 4.6-2.1 1-2.4-4.7-3.2 2.9z" fill="#fff"/></svg>TAP!</i>
         </a>
-        <div class="slot kv"><div class="ph">KV画像<small>縦長 2:3</small></div></div>
+        <div class="slot kv"><img src="kv.jpg" alt="文学フリマ東京43 キービジュアル"></div>
       </div>
     </div>
   </section>
@@ -308,7 +320,7 @@ a { color: inherit; }
           <div><dt>イベント名</dt><dd>文学フリマ東京43</dd></div>
           <div><dt>日時</dt><dd>2026年11月8日(日) 12:00〜17:00</dd></div>
           <div><dt>会場</dt><dd>東京ビッグサイト 南1-4ホール</dd></div>
-          <div><dt>スペース番号</dt><dd>Y-15,16</dd></div>
+          <div><dt>スペース番号</dt><dd><button class="map-btn" type="button">Y-15,16</button></dd></div>
           <div><dt>サークル名</dt><dd>StudioLuca</dd></div>
           <div><dt>イベント公式</dt><dd><a href="https://bunfree.net/event/tokyo43/" target="_blank" rel="noopener" style="color:var(--blue-deep)">bunfree.net/event/tokyo43</a></dd></div>
         </dl>
@@ -339,7 +351,7 @@ a { color: inherit; }
         <dl class="spec" style="margin-top:20px">
           <div><dt>実施時間</dt><dd>15:00〜17:00</dd></div>
           <div><dt>対象</dt><dd>『WAKE 2026夏号』のみ<br>(会場でのご購入、または既にオンライン等でご購入済みの実物をご持参いただいた方)</dd></div>
-          <div><dt>参加方法</dt><dd>事前の「Web整理券」制です。デジタル整理券をお持ちの方がご参加いただけます。</dd></div>
+          <div><dt>参加方法</dt><dd>事前の「Web整理券」制です。Web整理券をお持ちの方がご参加いただけます。</dd></div>
           <div><dt>ご案内</dt><dd>指定時間外のブース付近での待機はご遠慮ください。スムーズな運営のため、お時間に合わせての集合にご協力をお願いいたします。</dd></div>
         </dl>
       </div>
@@ -354,18 +366,17 @@ a { color: inherit; }
       <div class="card">
         <p>整理券を事前に配布します。サイン会の参加には整理券が必要です。</p>
         <dl class="spec" style="margin-top:20px">
-          <div><dt>配布方法</dt><dd>事前配布(デジタル整理券)<br><a class="btn blue" style="margin-top:12px" href="https://script.google.com/a/macros/studioluca.jp/s/AKfycbzXzYjGqXlSliZp1CzOZWULzvG5vj94MKqkJIld4ZmOkW3Jzvj03Whth65uWWvvnvz_EQ/exec" target="_blank" rel="noopener">整理券を受け取る</a></dd></div>
+          <div><dt>配布方法</dt><dd>事前配布(Web整理券)<br><a class="btn blue" style="margin-top:12px" href="https://script.google.com/a/macros/studioluca.jp/s/AKfycbzXzYjGqXlSliZp1CzOZWULzvG5vj94MKqkJIld4ZmOkW3Jzvj03Whth65uWWvvnvz_EQ/exec" target="_blank" rel="noopener">整理券を受け取る</a></dd></div>
           <div><dt>配布開始</dt><dd>2026年10月19日(月) 18:00</dd></div>
           <div><dt>受付条件</dt><dd>どなたでも取得できます(先着順・お一人様1枚)</dd></div>
-          <div><dt>注意事項</dt><dd>当日のサイン会に参加するには、<b>WAKE 2026夏号</b>が必要です。</dd></div>
+          <div><dt>注意事項</dt><dd>当日のサイン会に参加するには、<b>WAKE 2026夏号</b>が必要です。<br>(会場でのご購入、またはオンラインで購入した実物をご持参ください)</dd></div>
         </dl>
         <h3 class="h3">当日の流れ</h3>
         <ol class="steps">
-          <li><b>番号を取得</b><span>10月19日 18:00から、URLにアクセスしてデジタル整理券を受け取ります。</span></li>
+          <li><b>番号を取得</b><span>10月19日 18:00から、URLにアクセスしてWeb整理券を受け取ります。</span></li>
           <li><b>呼び出しを待つ</b><span>番号順にグループ単位でお呼びします。</span></li>
           <li><b>ブースへ</b><span>ご案内に沿ってお越しください。</span></li>
         </ol>
-        <p class="note" style="margin-top:16px">※ 当日の流れは、確定後に更新します。</p>
       </div>
     </div>
   </section>
@@ -376,7 +387,7 @@ a { color: inherit; }
     <div class="inner">
       <h2 class="h2">お支払い方法</h2>
       <div class="card pay-card">
-        <p class="pay-main"><span class="pay-name">PayPay</span><span class="pay-only">のみ</span></p>
+        <p class="pay-main"><span class="pay-logo-box"><img class="pay-logo" src="paypay.png" alt="PayPay" width="702" height="186"></span></p>
         <p class="pay-note">お支払いはPayPayのみとなります。<br>現金・クレジットカード・その他の決済はご利用いただけません。</p>
       </div>
     </div>
@@ -396,12 +407,25 @@ a { color: inherit; }
     </div>
   </section>
 </main>
+<dialog class="map-dialog" id="mapDialog" aria-label="会場配置図">
+  <div class="map-box">
+    <button class="map-close" type="button" aria-label="閉じる" onclick="document.getElementById('mapDialog').close()">×</button>
+    <h3>会場配置図(南1・2ホール)／StudioLuca は Y-15,16</h3>
+    <img src="map.jpg" alt="文学フリマ東京43 会場配置図。StudioLucaのスペースY-15,16はオレンジの枠の位置です">
+    <p>オレンジの枠が StudioLuca(Y-15,16)です。画像は文学フリマ東京事務局の配置図に印を付けたものです。</p>
+  </div>
+</dialog>
+<script>
+(function(){var d=document.getElementById('mapDialog');if(!d)return;
+document.querySelectorAll('.map-btn').forEach(function(b){b.addEventListener('click',function(){if(d.showModal)d.showModal();else d.setAttribute('open','');});});
+d.addEventListener('click',function(e){if(e.target===d)d.close();});})();
+</script>
+
 
 <footer class="band b-blue site-footer">
   <span class="wave" aria-hidden="true"><svg viewBox="0 0 1200 40" preserveAspectRatio="none"><use href="#wave"/></svg></span>
   <div class="inner">
-    <!-- マスコット: <img src="mascot.png" alt=""> を入れて文字を削除 -->
-    <div class="mascot">マスコット<br>画像</div>
+    <div class="mascot"><svg viewBox="106 0 156 144" role="img" aria-label="StudioLuca マーク"><ellipse fill="#fff" cx="180.34" cy="69.5" rx="22.75" ry="12.63" transform="translate(-12.83 75.53) rotate(-22.86)"/><path fill="#00b4ff" d="M201.47,98.2c3.16,7.09,1.48,14.72-3.74,17.05,5.22-2.33,12.02,1.54,15.17,8.62-1.68-3.77-3.91-8.77-6.1-13.71,2.2,4.93,4.43,9.94,6.1,13.71-3.16-7.09-1.48-14.72,3.74-17.05-5.22,2.33-12.02-1.54-15.17-8.62Z"/><path fill="#060001" d="M237.67,31.66c-4.68-15.94,11.38-23.18,7.38-28.78-4.76-6.66-28.99-1.38-44.14,11.61-.07.06-.14.13-.21.19-32.86-2.82-59.15,22.02-66.71,45.19-3.86,11.83-7.09,35.32,5.61,43.08,9.87,6.03,55.62-17.93,74.45-5.36,14.89,9.94,6.59,25.9,13.6,27.96,8.28,2.44,24.27-16.72,27.81-36.5,3.02-16.88-1.76-41.12-17.79-57.39ZM185.77,80.92c-11.5,5.04-23.26,4.01-26.26-2.29-3-6.3,3.9-15.5,15.4-20.54,11.5-5.04,23.26-4.01,26.26,2.29,3,6.3-3.9,15.5-15.4,20.54Z"/></svg></div>
     <a class="btn solid" href="#top">ページの先頭へ</a>
     <div class="links">
       <span>公式サイト: <a href="https://studioluca.jp/" target="_blank" rel="noopener">studioluca.jp</a></span>
