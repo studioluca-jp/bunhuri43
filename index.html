@@ -160,7 +160,8 @@ a { color: inherit; }
 .steps li { counter-increment: s; background: var(--pale); border-radius: 20px; padding: 20px 18px 22px; }
 .steps li::before { content: counter(s); display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--pink); color: #0C1B4B; font-weight: 900; margin-bottom: 10px; font-variant-numeric: tabular-nums; }
 .steps b { display: block; font-weight: 900; font-size: 1.05rem; }
-.steps span { display: block; font-size: 0.9rem; color: var(--muted); }
+.steps span { display: block; font-size: 0.9rem; line-height: 1.7; color: var(--muted); text-wrap: balance; word-break: auto-phrase; }
+.steps b { line-height: 1.5; }
 
 .times { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
 .times li { background: var(--card); border-radius: 20px; padding: 16px 20px; border-left: 8px solid var(--pink-deep); }
@@ -354,7 +355,7 @@ a { color: inherit; }
         <div class="pick">
           <div class="pick-img"><img src="bath.png" alt="ゆわぁ〜の香り バスソルトのパッケージ"></div>
           <div>
-            <p class="pick-label"><span class="pick-tag">NEW</span>入浴剤ピックアップ</p>
+            <p class="pick-label"><span class="pick-tag">NEW</span></p>
             <h3>ゆわぁ〜の香り バスソルト</h3>
             <p class="pick-bonus"><i>おまけ</i>買って遊べるおまけつき！</p>
           </div>
