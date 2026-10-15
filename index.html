@@ -261,16 +261,19 @@ a { color: inherit; }
 .map-close { position: absolute; top: 10px; right: 10px; width: 36px; height: 36px; border-radius: 50%; border: 0; background: var(--blue); color: #fff; font-size: 1.3rem; font-weight: 900; line-height: 1; cursor: pointer; }
 /* お品書き画像・入浴剤ピックアップ */
 .menu-img { aspect-ratio: 3509 / 2481; border-radius: 16px; border: 0; overflow: hidden; }
-.pick { margin-top: 28px; background: var(--card); color: var(--ink); border-radius: 28px; padding: 28px 28px 30px; box-shadow: 0 6px 0 rgba(12,27,75,.18); display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 28px; align-items: center; }
-.pick-img { display: grid; place-items: center; background: #FFF6B8; border-radius: 22px; padding: 18px; }
-.pick-img img { width: 100%; max-width: 280px; height: auto; display: block; filter: drop-shadow(0 6px 0 rgba(12,27,75,.15)); }
+.pick { margin-top: 22px; background: #FFF9D6; border-radius: 22px; padding: 18px 22px; display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 22px; align-items: center; }
+.pick-img { display: grid; place-items: center; }
+.pick-img img { width: 100%; max-width: 150px; height: auto; display: block; filter: drop-shadow(0 4px 0 rgba(12,27,75,.15)); }
 .pick-tag { display: inline-block; background: var(--orange); color: #fff; font-weight: 900; font-size: 0.8rem; letter-spacing: 0.1em; padding: 2px 14px; border-radius: 999px; }
-.pick h3 { margin: 10px 0 14px; font-size: clamp(1.3rem, 4vw, 1.7rem); font-weight: 900; letter-spacing: 0.06em; color: var(--blue-deep); line-height: 1.4; }
-.pick h3::before, .pick h3::after { content: "・"; color: var(--pink-deep); }
-.pick-lead { font-size: 1.1rem; font-weight: 900; line-height: 1.7; }
-.pick-bonus { margin-top: 14px; display: inline-flex; align-items: center; gap: 10px; background: var(--pale); border-radius: 18px; padding: 10px 18px; font-weight: 900; color: var(--blue-deep); }
+.pick h3 { margin: 6px 0 10px; font-size: clamp(1.15rem, 3.6vw, 1.5rem); font-weight: 900; letter-spacing: 0.04em; color: var(--ink); line-height: 1.4; }
+.pick-label { display: flex; align-items: center; gap: 10px; font-weight: 900; font-size: 0.9rem; letter-spacing: 0.08em; color: var(--muted); }
+.pick-bonus { margin: 0; display: inline-flex; align-items: center; gap: 10px; background: #fff; border-radius: 18px; padding: 8px 16px; font-weight: 900; color: var(--blue-deep); }
 .pick-bonus i { font-style: normal; background: var(--pink-deep); color: #fff; font-size: 0.75rem; padding: 1px 10px; border-radius: 999px; }
-@media (max-width: 760px) { .pick { grid-template-columns: minmax(0, 1fr); padding: 22px 20px 24px; gap: 18px; } .pick-img img { max-width: 220px; } }
+.pick-label { flex-wrap: wrap; row-gap: 4px; }
+.pick-tag, .pick-bonus i { white-space: nowrap; }
+.pick-bonus { flex-wrap: wrap; row-gap: 2px; font-size: 0.95rem; }
+@media (max-width: 480px) { .pick-label { font-size: 0.78rem; } .pick-bonus { padding: 6px 10px; font-size: 0.8rem; word-break: keep-all; } .pick-bonus i { display: none; } .pick { grid-template-columns: 84px minmax(0, 1fr); } .pick-img img { max-width: 84px; } }
+@media (max-width: 480px) { .pick { grid-template-columns: 96px minmax(0, 1fr); gap: 14px; padding: 14px; } .pick-img img { max-width: 96px; } }
 </style>
 
 </head>
@@ -347,16 +350,16 @@ a { color: inherit; }
       <h2 class="h2">お品書き</h2>
       <div class="card">
         <div class="slot menu-img"><img src="menu.jpg" alt="お品書き"></div>
-        <p class="note" style="margin-top:14px">価格はすべて税込です。内容は変更・完売となる場合があります。</p>
-      </div>
-      <div class="pick">
-        <div class="pick-img"><img src="bath.png" alt="ゆわぁ〜の香り バスソルトのパッケージ"></div>
-        <div>
-          <span class="pick-tag">PICK UP</span>
-          <h3>入浴剤ピックアップ</h3>
-          <p class="pick-lead">あったマリンの色のお湯になるよ</p>
-          <p class="pick-bonus"><i>おまけ</i>買って遊べるおまけつき</p>
+        
+        <div class="pick">
+          <div class="pick-img"><img src="bath.png" alt="ゆわぁ〜の香り バスソルトのパッケージ"></div>
+          <div>
+            <p class="pick-label"><span class="pick-tag">NEW</span>入浴剤ピックアップ</p>
+            <h3>ゆわぁ〜の香り バスソルト</h3>
+            <p class="pick-bonus"><i>おまけ</i>買って遊べるおまけつき！</p>
+          </div>
         </div>
+        <p class="note" style="margin-top:14px">価格はすべて税込です。内容は変更・完売となる場合があります。</p>
       </div>
     </div>
   </section>
