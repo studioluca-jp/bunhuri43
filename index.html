@@ -264,6 +264,7 @@ a { color: inherit; }
 .map-close { position: absolute; top: 10px; right: 10px; width: 36px; height: 36px; border-radius: 50%; border: 0; background: var(--blue); color: #fff; font-size: 1.3rem; font-weight: 900; line-height: 1; cursor: pointer; }
 /* お品書き画像・入浴剤ピックアップ */
 .menu-img { aspect-ratio: 3509 / 2481; border-radius: 16px; border: 0; overflow: hidden; }
+.pick-banner { display: block; width: 100%; height: auto; margin-top: 22px; border-radius: 16px; }
 .pick { margin-top: 22px; background: #FFF9D6; border-radius: 22px; padding: 18px 22px; display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 22px; align-items: center; }
 .pick-img { display: grid; place-items: center; }
 .pick-img img { width: 100%; max-width: 150px; height: auto; display: block; filter: drop-shadow(0 4px 0 rgba(12,27,75,.15)); }
@@ -354,14 +355,7 @@ a { color: inherit; }
       <div class="card">
         <div class="slot menu-img"><img src="menu.jpg" alt="お品書き"></div>
         
-        <div class="pick">
-          <div class="pick-img"><img src="bath.png" alt="ゆわぁ〜の香り バスソルトのパッケージ"></div>
-          <div>
-            <p class="pick-label"><span class="pick-tag">NEW</span></p>
-            <h3>ゆわぁ〜の香り バスソルト</h3>
-            <p class="pick-bonus"><i>おまけ</i>買って遊べるおまけつき！</p>
-          </div>
-        </div>
+        <img class="pick-banner" src="bathsalt.jpg" alt="NEW ゆわぁ〜の香り バスソルト 買って遊べる『おまけ』つき!!" width="1600" height="900">
         <p class="note" style="margin-top:14px">価格はすべて税込です。内容は変更・完売となる場合があります。</p>
         <p class="note" style="margin-top:6px">※ パーカーとスウェットパンツは、前回イベントの在庫の残りを若干数のみ販売します。</p>
       </div>
