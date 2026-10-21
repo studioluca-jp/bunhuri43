@@ -206,6 +206,8 @@ a { color: inherit; }
   .band { padding-block: 68px 76px; }
 }
 @media (max-width: 760px) {
+  /* スマホでは日時・スペース・会場が開催概要と重複するため、ヒーローの要点カードは非表示 */
+  .facts { display: none; }
   .band { padding-block: 60px 68px; }
   .wave { height: 28px; top: -27px; }
   .hero { padding-block: 32px 72px; }
