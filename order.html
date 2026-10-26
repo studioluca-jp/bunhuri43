@@ -55,6 +55,13 @@ main { max-width: 960px; margin: 0 auto; padding: 8px 16px 0; }
 .step .n { text-align: center; font-size: 1.1rem; font-variant-numeric: tabular-nums; }
 .step button { width: 44px; height: 38px; border: 0; border-radius: 999px; background: #fff; color: var(--pink-deep); font-size: 1.4rem; font-weight: 900; line-height: 1; }
 .step button.minus { background: rgba(255,255,255,.35); color: #fff; }
+.item.so .thumb img { filter: grayscale(1); opacity: .4; }
+.soldmark { position: absolute; inset: 0; display: grid; place-items: center; z-index: 1; }
+.soldmark span { background: var(--ink); color: #fff; font-weight: 900; letter-spacing: .1em; padding: 4px 18px; border-radius: 999px; transform: rotate(-8deg); }
+.item.so .name, .item.so .price { color: var(--muted); }
+.add:disabled { background: #B9C3DA; cursor: default; }
+.notice { margin: 16px 0 0; padding: 12px 40px 12px 16px; background: #FFF1E6; border: 2px solid var(--orange); border-radius: 16px; font-weight: 700; font-size: 0.9rem; position: relative; }
+.notice button { position: absolute; top: 6px; right: 6px; width: 32px; height: 32px; border: 0; border-radius: 50%; background: none; font-size: 1.2rem; font-weight: 900; color: var(--muted); }
 .notes { margin: 28px 0 0; padding: 16px 18px; background: var(--card); border-radius: 18px; font-size: 0.85rem; color: var(--muted); }
 .notes p { margin: 0 0 4px; }
 .bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; padding: 10px 12px calc(10px + env(safe-area-inset-bottom)); background: linear-gradient(to top, rgba(230,243,255,1) 70%, rgba(230,243,255,0)); }
@@ -148,7 +155,7 @@ dialog::backdrop { background: rgba(12, 27, 75, 0.6); }
 </dialog>
 
 <script>
-/* 商品の編集はここだけ。image に画像のパス(例 "img/bath.png")を入れると表示されます。 */
+/* 商品の編集はここだけ。image に画像のパス、売り切れの商品には soldOut: true を付けると「売り切れ」表示になり、保存済みのリストからも自動で外れます。 */
 var SECTIONS = [
   { title: "あったマリン", items: [
     { id: "bathsalt", name: "ゆわぁ〜の香り バスソルト", price: 800, isNew: true, image: "img/bathsalt.webp" },
@@ -174,21 +181,24 @@ var KEY = "studioluca-bunfuri43-list", MAX = 99;
 var items = {}; SECTIONS.forEach(function (s) { s.items.forEach(function (i) { items[i.id] = i; }); });
 var qty = {};
 try { var saved = JSON.parse(localStorage.getItem(KEY) || "{}"); Object.keys(saved).forEach(function (k) { if (items[k] && saved[k] > 0) qty[k] = Math.min(MAX, saved[k] | 0); }); } catch (e) {}
+var removed = [];
+Object.keys(qty).forEach(function (k) { if (items[k].soldOut) { removed.push(items[k].name); delete qty[k]; } });
 function save() { try { localStorage.setItem(KEY, JSON.stringify(qty)); } catch (e) {} }
+if (removed.length) save();
 function yen(n) { return "¥" + n.toLocaleString("ja-JP"); }
 function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
 function totals() { var c = 0, a = 0; Object.keys(qty).forEach(function (k) { c += qty[k]; a += qty[k] * items[k].price; }); return { c: c, a: a }; }
-function set(id, n) { n = Math.max(0, Math.min(MAX, n)); if (n) qty[id] = n; else delete qty[id]; save(); render(); }
+function set(id, n) { if (items[id].soldOut) n = 0; n = Math.max(0, Math.min(MAX, n)); if (n) qty[id] = n; else delete qty[id]; save(); render(); }
 function stepHtml(id) { return '<div class="step"><button class="minus" type="button" data-act="dec" data-id="' + id + '" aria-label="1つ減らす">−</button><span class="n">' + qty[id] + '</span><button type="button" data-act="inc" data-id="' + id + '" aria-label="1つ増やす">＋</button></div>'; }
 function renderCatalog() {
-  var h = "";
+  var h = removed.length ? '<div class="notice" id="notice">売り切れのため、次の商品をリストから外しました:' + removed.map(esc).join('、') + '<button type="button" data-act="hideNotice" aria-label="閉じる">×</button></div>' : "";
   SECTIONS.forEach(function (s) {
     h += '<h2 class="h2">' + esc(s.title) + '</h2><div class="grid">';
     s.items.forEach(function (i) {
-      var on = !!qty[i.id];
-      h += '<article class="item' + (on ? " on" : "") + '"><div class="thumb' + (i.image ? ' has' : '') + '">' + (i.isNew ? '<span class="new">NEW</span>' : "") + (i.image ? '<img src="' + esc(i.image) + '" alt="' + esc(i.name) + '">' : "") + '</div>' +
+      var on = !!qty[i.id], so = !!i.soldOut;
+      h += '<article class="item' + (on ? " on" : "") + (so ? " so" : "") + '"><div class="thumb' + (i.image ? ' has' : '') + '">' + (i.isNew && !so ? '<span class="new">NEW</span>' : "") + (so ? '<div class="soldmark"><span>売り切れ</span></div>' : "") + (i.image ? '<img src="' + esc(i.image) + '" alt="' + esc(i.name) + '">' : "") + '</div>' +
         '<p class="name">' + esc(i.name) + '</p><p class="price">' + yen(i.price) + '<small>(税込)</small></p>' + (i.stock ? '<p class="stock">' + esc(i.stock) + '</p>' : "") +
-        (on ? stepHtml(i.id) : '<button class="add" type="button" data-act="add" data-id="' + i.id + '">リストに追加</button>') + '</article>';
+        (so ? '<button class="add" type="button" disabled>売り切れ</button>' : on ? stepHtml(i.id) : '<button class="add" type="button" data-act="add" data-id="' + i.id + '">リストに追加</button>') + '</article>';
     });
     h += "</div>";
   });
@@ -218,7 +228,7 @@ function render() {
 }
 document.addEventListener("click", function (e) {
   var b = e.target.closest("[data-act]");
-  if (b) { var id = b.dataset.id, a = b.dataset.act; if (a === "add") set(id, 1); else if (a === "inc") set(id, (qty[id] || 0) + 1); else if (a === "dec") set(id, (qty[id] || 0) - 1); else if (a === "del") set(id, 0); return; }
+  if (b) { var id = b.dataset.id, a = b.dataset.act; if (a === "hideNotice") { removed = []; renderCatalog(); } else if (a === "add") set(id, 1); else if (a === "inc") set(id, (qty[id] || 0) + 1); else if (a === "dec") set(id, (qty[id] || 0) - 1); else if (a === "del") set(id, 0); return; }
   if (e.target.closest("[data-close]")) { var d = e.target.closest("dialog"); if (d) d.close(); return; }
   if (e.target.tagName === "DIALOG") e.target.close();
 });
