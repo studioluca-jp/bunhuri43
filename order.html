@@ -42,6 +42,7 @@ main { max-width: 960px; margin: 0 auto; padding: 8px 16px 0; }
 .item { background: var(--card); border-radius: 22px; padding: 10px 10px 12px; box-shadow: 0 4px 0 rgba(12, 27, 75, 0.12); display: flex; flex-direction: column; }
 .item.on { outline: 3px solid var(--pink-deep); outline-offset: -3px; }
 .thumb { position: relative; aspect-ratio: 1 / 1; border-radius: 16px; background: #F3F8FD; border: 2px dashed var(--line); overflow: hidden; }
+.thumb.has { border: 0; background: #fff; }
 .thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
 .new { position: absolute; top: 8px; left: 8px; background: var(--orange); color: #fff; font-weight: 900; font-size: 0.72rem; letter-spacing: 0.08em; padding: 1px 10px; border-radius: 999px; z-index: 1; }
 .name { margin: 10px 4px 0; font-weight: 900; font-size: 0.95rem; line-height: 1.45; flex: 1; overflow-wrap: anywhere; }
@@ -150,23 +151,23 @@ dialog::backdrop { background: rgba(12, 27, 75, 0.6); }
 /* 商品の編集はここだけ。image に画像のパス(例 "img/bath.png")を入れると表示されます。 */
 var SECTIONS = [
   { title: "あったマリン", items: [
-    { id: "bathsalt", name: "ゆわぁ〜の香り バスソルト", price: 800, isNew: true, image: "" },
-    { id: "stickerCreatures", name: "生きものたちのステッカー", price: 330, isNew: true, image: "" }
+    { id: "bathsalt", name: "ゆわぁ〜の香り バスソルト", price: 800, isNew: true, image: "img/bathsalt.webp" },
+    { id: "stickerCreatures", name: "生きものたちのステッカー", price: 330, isNew: true, image: "img/stickerCreatures.webp" }
   ]},
   { title: "社報誌 WAKE", items: [
-    { id: "wake2026summer", name: "社報誌WAKE 2026夏号", price: 800, isNew: true, image: "" },
-    { id: "wake2026spring", name: "社報誌WAKE 2026春号", price: 800, image: "" },
-    { id: "wake2025winter", name: "社報誌WAKE 2025冬号", price: 800, image: "" }
+    { id: "wake2026summer", name: "社報誌WAKE 2026夏号", price: 800, isNew: true, image: "img/wake2026summer.webp" },
+    { id: "wake2026spring", name: "社報誌WAKE 2026春号", price: 800, image: "img/wake2026spring.webp" },
+    { id: "wake2025winter", name: "社報誌WAKE 2025冬号", price: 800, image: "img/wake2025winter.webp" }
   ]},
   { title: "ノルカソルカ", items: [
-    { id: "denimCap", name: "デニムキャップ", price: 3900, isNew: true, image: "" },
-    { id: "parka", name: "パーカー", price: 11000, image: "" },
-    { id: "sweatPants", name: "スウェットパンツ", price: 8800, image: "" },
-    { id: "randomSticker", name: "ランダムステッカー", price: 330, image: "" }
+    { id: "denimCap", name: "デニムキャップ", price: 3900, isNew: true, image: "img/denimCap.webp" },
+    { id: "parka", name: "パーカー", price: 11000, image: "img/parka.webp" },
+    { id: "sweatPants", name: "スウェットパンツ", price: 8800, image: "img/sweatPants.webp" },
+    { id: "randomSticker", name: "ランダムステッカー", price: 330, image: "img/randomSticker.webp" }
   ]},
   { title: "ロゴグッズ", items: [
-    { id: "logoSticker", name: "ロゴステッカー", price: 300, image: "" },
-    { id: "tumbler", name: "ロゴタンブラー", price: 4900, isNew: true, image: "" }
+    { id: "logoSticker", name: "ロゴステッカー", price: 300, image: "img/logoSticker.webp" },
+    { id: "tumbler", name: "ロゴタンブラー", price: 4900, isNew: true, image: "img/tumbler.webp" }
   ]}
 ];
 var KEY = "studioluca-bunfuri43-list", MAX = 99;
@@ -185,7 +186,7 @@ function renderCatalog() {
     h += '<h2 class="h2">' + esc(s.title) + '</h2><div class="grid">';
     s.items.forEach(function (i) {
       var on = !!qty[i.id];
-      h += '<article class="item' + (on ? " on" : "") + '"><div class="thumb">' + (i.isNew ? '<span class="new">NEW</span>' : "") + (i.image ? '<img src="' + esc(i.image) + '" alt="' + esc(i.name) + '">' : "") + '</div>' +
+      h += '<article class="item' + (on ? " on" : "") + '"><div class="thumb' + (i.image ? ' has' : '') + '">' + (i.isNew ? '<span class="new">NEW</span>' : "") + (i.image ? '<img src="' + esc(i.image) + '" alt="' + esc(i.name) + '">' : "") + '</div>' +
         '<p class="name">' + esc(i.name) + '</p><p class="price">' + yen(i.price) + '<small>(税込)</small></p>' + (i.stock ? '<p class="stock">' + esc(i.stock) + '</p>' : "") +
         (on ? stepHtml(i.id) : '<button class="add" type="button" data-act="add" data-id="' + i.id + '">リストに追加</button>') + '</article>';
     });
