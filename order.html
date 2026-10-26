@@ -141,7 +141,7 @@ dialog::backdrop { background: rgba(12, 27, 75, 0.6); }
     <div class="banner">お買い物リスト<small>レジでこの画面をお見せください(お支払いはPayPayのみ)</small></div>
     <div class="rows" id="regRows"></div>
     <div class="total"><span>合計 <b id="rCnt">0</b> 点</span><span class="a" id="rAmt">¥0<small>(税込)</small></span></div>
-    <p class="note">この画面は事前のメモです。ご購入の確定はレジで行います。在庫状況によりご希望の商品をお渡しできない場合があります。</p>
+    <p class="note">この画面は購入を確約するものではありません。お支払いは当日、レジにてお願いいたします。在庫状況により、ご希望の商品をお渡しできない場合があります。</p>
     <div class="foot"><button class="cta" type="button" data-close>リストに戻る</button></div>
   </div>
 </dialog>
@@ -191,7 +191,7 @@ function renderCatalog() {
     });
     h += "</div>";
   });
-  h += '<div class="notes"><p>・価格はすべて税込です。内容は変更・完売となる場合があります。</p><p>・このリストは事前のメモです。決済はせず、購入の確定は当日のレジで行います。</p><p>・リストはこのスマホ内に保存されます。ブラウザのデータを消すと消えます。</p></div>';
+  h += '<div class="notes"><p>・価格はすべて税込です。内容は変更・完売となる場合があります。</p><p>・混雑緩和のため、事前の購入リストの作成にご協力ください。リストの作成は購入を確約するものではなく、事前のお支払いは行いません。お支払いは当日、レジにてお願いいたします。</p><p>・リストはこのスマホ内に保存されます。ブラウザのデータを消すと消えます。</p></div>';
   document.getElementById("catalog").innerHTML = h;
 }
 function renderList() {
