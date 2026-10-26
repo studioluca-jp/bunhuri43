@@ -46,6 +46,7 @@ main { max-width: 960px; margin: 0 auto; padding: 8px 16px 0; }
 .thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
 .new { position: absolute; top: 8px; left: 8px; background: var(--orange); color: #fff; font-weight: 900; font-size: 0.72rem; letter-spacing: 0.08em; padding: 1px 10px; border-radius: 999px; z-index: 1; }
 .name { margin: 10px 4px 0; font-weight: 900; font-size: 0.95rem; line-height: 1.45; flex: 1; overflow-wrap: anywhere; }
+.name .sub { display: block; font-size: 0.7rem; font-weight: 700; color: var(--muted); margin-bottom: 1px; }
 .price { margin: 2px 4px 8px; font-weight: 900; font-size: 1.05rem; }
 .price small { font-size: 0.72rem; font-weight: 700; color: var(--muted); margin-left: 2px; }
 .stock { margin: 0 4px 8px; font-size: 0.75rem; color: var(--pink-deep); font-weight: 900; }
@@ -158,8 +159,13 @@ dialog::backdrop { background: rgba(12, 27, 75, 0.6); }
 /* 商品の編集はここだけ。image に画像のパス、売り切れの商品には soldOut: true を付けると「売り切れ」表示になり、保存済みのリストからも自動で外れます。 */
 var SECTIONS = [
   { title: "あったマリン", items: [
-    { id: "bathsalt", name: "ゆわぁ〜の香り バスソルト", price: 800, isNew: true, image: "img/bathsalt.webp" },
-    { id: "stickerCreatures", name: "生きものたちのステッカー", price: 330, isNew: true, image: "img/stickerCreatures.webp" }
+    { id: "bathsalt", name: "ゆわぁ〜の香り バスソルト", price: 800, isNew: true, soldOut: true, image: "img/bathsalt.webp" },
+    { id: "olNormal", name: "オルくんノーマル", sub: "生きものたちのステッカー", price: 330, isNew: true, image: "" },
+    { id: "harisenNormal", name: "ハリセンボンノーマル", sub: "生きものたちのステッカー", price: 330, isNew: true, image: "" },
+    { id: "mizunoNormal", name: "ミズノノーマル", sub: "生きものたちのステッカー", price: 330, isNew: true, image: "" },
+    { id: "olYuwaa", name: "オルくんゆわぁ～", sub: "生きものたちのステッカー", price: 330, isNew: true, image: "" },
+    { id: "harisenYuwaa", name: "ハリセンボンゆわぁ～", sub: "生きものたちのステッカー", price: 330, isNew: true, image: "" },
+    { id: "mizunoYuwaa", name: "ミズノゆわぁ～", sub: "生きものたちのステッカー", price: 330, isNew: true, image: "" }
   ]},
   { title: "社報誌 WAKE", items: [
     { id: "wake2026summer", name: "社報誌WAKE 2026夏号", price: 800, isNew: true, image: "img/wake2026summer.webp" },
@@ -168,7 +174,7 @@ var SECTIONS = [
   ]},
   { title: "ノルカソルカ", items: [
     { id: "denimCap", name: "デニムキャップ", price: 3900, isNew: true, image: "img/denimCap.webp" },
-    { id: "parka", name: "パーカー", price: 11000, image: "img/parka.webp" },
+    { id: "parka", name: "パーカー", price: 11000, soldOut: true, image: "img/parka.webp" },
     { id: "sweatPants", name: "スウェットパンツ", price: 8800, image: "img/sweatPants.webp" },
     { id: "randomSticker", name: "ランダムステッカー", price: 330, image: "img/randomSticker.webp" }
   ]},
@@ -182,9 +188,10 @@ var items = {}; SECTIONS.forEach(function (s) { s.items.forEach(function (i) { i
 var qty = {};
 try { var saved = JSON.parse(localStorage.getItem(KEY) || "{}"); Object.keys(saved).forEach(function (k) { if (items[k] && saved[k] > 0) qty[k] = Math.min(MAX, saved[k] | 0); }); } catch (e) {}
 var removed = [];
-Object.keys(qty).forEach(function (k) { if (items[k].soldOut) { removed.push(items[k].name); delete qty[k]; } });
+Object.keys(qty).forEach(function (k) { if (items[k].soldOut) { removed.push(label(items[k])); delete qty[k]; } });
 function save() { try { localStorage.setItem(KEY, JSON.stringify(qty)); } catch (e) {} }
 if (removed.length) save();
+function label(i) { return i.sub ? i.sub + " " + i.name : i.name; }
 function yen(n) { return "¥" + n.toLocaleString("ja-JP"); }
 function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
 function totals() { var c = 0, a = 0; Object.keys(qty).forEach(function (k) { c += qty[k]; a += qty[k] * items[k].price; }); return { c: c, a: a }; }
@@ -197,7 +204,7 @@ function renderCatalog() {
     s.items.forEach(function (i) {
       var on = !!qty[i.id], so = !!i.soldOut;
       h += '<article class="item' + (on ? " on" : "") + (so ? " so" : "") + '"><div class="thumb' + (i.image ? ' has' : '') + '">' + (i.isNew && !so ? '<span class="new">NEW</span>' : "") + (so ? '<div class="soldmark"><span>売り切れ</span></div>' : "") + (i.image ? '<img src="' + esc(i.image) + '" alt="' + esc(i.name) + '">' : "") + '</div>' +
-        '<p class="name">' + esc(i.name) + '</p><p class="price">' + yen(i.price) + '<small>(税込)</small></p>' + (i.stock ? '<p class="stock">' + esc(i.stock) + '</p>' : "") +
+        '<p class="name">' + (i.sub ? '<span class="sub">' + esc(i.sub) + '</span>' : "") + esc(i.name) + '</p><p class="price">' + yen(i.price) + '<small>(税込)</small></p>' + (i.stock ? '<p class="stock">' + esc(i.stock) + '</p>' : "") +
         (so ? '<button class="add" type="button" disabled>売り切れ</button>' : on ? stepHtml(i.id) : '<button class="add" type="button" data-act="add" data-id="' + i.id + '">リストに追加</button>') + '</article>';
     });
     h += "</div>";
@@ -208,13 +215,13 @@ function renderCatalog() {
 function renderList() {
   var keys = Object.keys(qty), h = "";
   if (!keys.length) h = '<p class="empty">まだ商品が入っていません。<br>商品の「リストに追加」を押してください。</p>';
-  keys.forEach(function (k) { var i = items[k]; h += '<div class="row"><div><div class="t">' + esc(i.name) + '</div><div class="p">' + yen(i.price) + '(税込)</div></div><div class="ctl">' + stepHtml(k) + '</div><div></div><div style="text-align:right"><button class="del" type="button" data-act="del" data-id="' + k + '">削除</button></div></div>'; });
+  keys.forEach(function (k) { var i = items[k]; h += '<div class="row"><div><div class="t">' + esc(label(i)) + '</div><div class="p">' + yen(i.price) + '(税込)</div></div><div class="ctl">' + stepHtml(k) + '</div><div></div><div style="text-align:right"><button class="del" type="button" data-act="del" data-id="' + k + '">削除</button></div></div>'; });
   document.getElementById("listRows").innerHTML = h;
   document.getElementById("toReg").disabled = !keys.length;
 }
 function renderReg() {
   var h = "", keys = Object.keys(qty), t = totals();
-  keys.forEach(function (k) { h += '<div class="line"><span class="t">' + esc(items[k].name) + '</span><span class="q"><small>×</small>' + qty[k] + '</span></div>'; });
+  keys.forEach(function (k) { h += '<div class="line"><span class="t">' + esc(label(items[k])) + '</span><span class="q"><small>×</small>' + qty[k] + '</span></div>'; });
   document.getElementById("regRows").innerHTML = h;
   document.getElementById("rCnt").textContent = t.c;
   document.getElementById("rAmt").innerHTML = yen(t.a) + "<small>(税込)</small>";
