@@ -161,13 +161,13 @@ var SECTIONS = [
   ]},
   { title: "ノルカソルカ", items: [
     { id: "denimCap", name: "デニムキャップ", price: 3900, isNew: true, image: "" },
-    { id: "tumbler", name: "ロゴタンブラー", price: 4900, isNew: true, image: "" },
     { id: "parka", name: "パーカー", price: 11000, image: "" },
     { id: "sweatPants", name: "スウェットパンツ", price: 8800, image: "" },
     { id: "randomSticker", name: "ランダムステッカー", price: 330, image: "" }
   ]},
   { title: "ロゴグッズ", items: [
-    { id: "logoSticker", name: "ロゴステッカー", price: 300, image: "" }
+    { id: "logoSticker", name: "ロゴステッカー", price: 300, image: "" },
+    { id: "tumbler", name: "ロゴタンブラー", price: 4900, isNew: true, image: "" }
   ]}
 ];
 var KEY = "studioluca-bunfuri43-list", MAX = 99;
@@ -192,7 +192,7 @@ function renderCatalog() {
     });
     h += "</div>";
   });
-  h += '<div class="notes"><p>・価格はすべて税込です。内容は変更・完売となる場合があります。</p><p>・このリストは事前のメモです。決済はせず、購入の確定は当日のレジで行います。</p><p>・リストはこのスマホ内に保存されます(ブラウザのデータを消すと消えます)。</p></div>';
+  h += '<div class="notes"><p>・価格はすべて税込です。内容は変更・完売となる場合があります。</p><p>・このリストは事前のメモです。決済はせず、購入の確定は当日のレジで行います。</p><p>・リストはこのスマホ内に保存されます。ブラウザのデータを消すと消えます。</p></div>';
   document.getElementById("catalog").innerHTML = h;
 }
 function renderList() {
