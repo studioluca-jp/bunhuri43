@@ -5,18 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
 <title>StudioLuca 文学フリマ出店情報</title>
-<meta name="description" content="2026年11月8日(日) 文学フリマ東京43 / 東京ビッグサイト 南1-4ホール Y-15,16 StudioLuca の出店情報">
+<meta name="description" content="StudioLucaの文学フリマ東京43 出店情報。2026年11月8日(日) 東京ビッグサイト 南1-4ホール Y-15,16。お品書き・サイン会・整理券のご案内。">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://studioluca-jp.github.io/bunhuri43/">
+<meta property="og:site_name" content="StudioLuca">
 <meta property="og:title" content="StudioLuca 文学フリマ出店情報">
-<meta property="og:description" content="2026年11月8日(日) 文学フリマ東京43 / 東京ビッグサイト 南1-4ホール Y-15,16 StudioLuca の出店情報">
-<meta property="og:image" content="https://studioluca-jp.github.io/bunhuri43/ogp.jpg">
+<meta property="og:description" content="2026年11月8日(日) 12:00〜17:00 東京ビッグサイト 南1-4ホール Y-15,16。お品書き・サイン会・整理券のご案内。">
+<meta property="og:url" content="https://studioluca-jp.github.io/bunhuri43/">
+<meta property="og:image" content="https://studioluca-jp.github.io/bunhuri43/ogp.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:site_name" content="StudioLuca">
-<meta property="og:locale" content="ja_JP">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://studioluca-jp.github.io/bunhuri43/ogp.jpg">
+<meta name="twitter:image" content="https://studioluca-jp.github.io/bunhuri43/ogp.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap">
@@ -276,7 +275,6 @@ a { color: inherit; }
 .map-close { position: absolute; top: 10px; right: 10px; width: 36px; height: 36px; border-radius: 50%; border: 0; background: var(--blue); color: #fff; font-size: 1.3rem; font-weight: 900; line-height: 1; cursor: pointer; }
 /* お品書き画像・入浴剤ピックアップ */
 .menu-img { aspect-ratio: 3509 / 2481; border-radius: 16px; border: 0; overflow: hidden; }
-.pick-banner { display: block; width: 100%; height: auto; margin-top: 22px; border-radius: 16px; }
 .pick { margin-top: 22px; background: #FFF9D6; border-radius: 22px; padding: 18px 22px; display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 22px; align-items: center; }
 .pick-img { display: grid; place-items: center; }
 .pick-img img { width: 100%; max-width: 150px; height: auto; display: block; filter: drop-shadow(0 4px 0 rgba(12,27,75,.15)); }
@@ -290,6 +288,9 @@ a { color: inherit; }
 .pick-bonus { flex-wrap: wrap; row-gap: 2px; font-size: 0.95rem; }
 @media (max-width: 480px) { .pick-label { font-size: 0.78rem; } .pick-bonus { padding: 6px 10px; font-size: 0.8rem; word-break: keep-all; } .pick-bonus i { display: none; } .pick { grid-template-columns: 84px minmax(0, 1fr); } .pick-img img { max-width: 84px; } }
 @media (max-width: 480px) { .pick { grid-template-columns: 96px minmax(0, 1fr); gap: 14px; padding: 14px; } .pick-img img { max-width: 96px; } }
+.shop-link { margin-top: 22px; padding-top: 20px; border-top: 3px dotted var(--line); text-align: center; }
+.shop-link .btn { width: 100%; max-width: 420px; justify-content: center; }
+.shop-link .note { margin-top: 10px; }
 </style>
 
 </head>
@@ -367,9 +368,20 @@ a { color: inherit; }
       <div class="card">
         <div class="slot menu-img"><img src="menu.jpg" alt="お品書き"></div>
         
-        <img class="pick-banner" src="bathsalt.jpg" alt="NEW ゆわぁ〜の香り バスソルト 買って遊べる『おまけ』つき!!" width="1600" height="900">
+        <div class="pick">
+          <div class="pick-img"><img src="bath.png" alt="ゆわぁ〜の香り バスソルトのパッケージ"></div>
+          <div>
+            <p class="pick-label"><span class="pick-tag">NEW</span></p>
+            <h3>ゆわぁ〜の香り バスソルト</h3>
+            <p class="pick-bonus"><i>おまけ</i>買って遊べるおまけつき！</p>
+          </div>
+        </div>
         <p class="note" style="margin-top:14px">価格はすべて税込です。内容は変更・完売となる場合があります。</p>
         <p class="note" style="margin-top:6px">※ パーカーとスウェットパンツは、前回イベントの在庫の残りを若干数のみ販売します。</p>
+        <div class="shop-link">
+          <a class="btn blue" href="order.html">事前にお買い物リストを作る</a>
+          <p class="note">買う商品と点数を先に決めて、当日レジでスマホの画面を見せてください。決済はしません。</p>
+        </div>
       </div>
     </div>
   </section>

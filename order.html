@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>お買い物リスト｜StudioLuca 文学フリマ</title>
+<meta name="description" content="文学フリマ東京43 StudioLucaブースの事前お買い物リスト。買う商品と点数を決めて、当日レジでスマホの画面を見せてください。決済はここでは行いません。">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap">
+<style>
+:root {
+  --blue: #1F8FF5; --blue-deep: #0B63C9; --sky: #8CCBFF;
+  --pink: #FFC2EC; --pink-deep: #E8479F; --orange: #FF7A1A;
+  --paper: #FFFFFF; --pale: #E6F3FF; --card: #FFFFFF;
+  --ink: #0C1B4B; --muted: #4A5A86; --line: #BFDDFA;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--pale); color: var(--ink); font-family: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Hiragino Sans", "Yu Gothic", sans-serif; font-weight: 500; line-height: 1.7; padding-bottom: 120px; }
+button { font: inherit; color: inherit; cursor: pointer; }
+.topbar { background: var(--blue); color: #fff; position: sticky; top: 0; z-index: 20; }
+.topbar .in { max-width: 960px; margin: 0 auto; padding: 12px 16px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; }
+.topbar a { color: #fff; font-weight: 900; text-decoration: none; font-size: 0.9rem; }
+.topbar h1 { margin: 0; font-size: 1.15rem; font-weight: 900; letter-spacing: 0.1em; }
+.intro { background: var(--blue); color: #fff; padding: 8px 16px 48px; position: relative; }
+.intro .in { max-width: 960px; margin: 0 auto; }
+.intro p { margin: 0 0 6px; }
+.intro .lead { font-weight: 900; font-size: 1.05rem; }
+.intro .sub { font-size: 0.88rem; opacity: 0.95; }
+.wave { position: absolute; left: 0; right: 0; bottom: -1px; height: 28px; line-height: 0; }
+.wave svg { width: 100%; height: 100%; display: block; fill: var(--pale); }
+main { max-width: 960px; margin: 0 auto; padding: 8px 16px 0; }
+.h2 { display: flex; align-items: center; gap: 10px; margin: 28px 0 14px; font-size: 1.15rem; font-weight: 900; letter-spacing: 0.08em; }
+.h2::before, .h2::after { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--pink-deep); flex: none; }
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+@media (min-width: 640px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 900px) { .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.item { background: var(--card); border-radius: 22px; padding: 10px 10px 12px; box-shadow: 0 4px 0 rgba(12, 27, 75, 0.12); display: flex; flex-direction: column; }
+.item.on { outline: 3px solid var(--pink-deep); outline-offset: -3px; }
+.thumb { position: relative; aspect-ratio: 1 / 1; border-radius: 16px; background: #F3F8FD; border: 2px dashed var(--line); overflow: hidden; }
+.thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.new { position: absolute; top: 8px; left: 8px; background: var(--orange); color: #fff; font-weight: 900; font-size: 0.72rem; letter-spacing: 0.08em; padding: 1px 10px; border-radius: 999px; z-index: 1; }
+.name { margin: 10px 4px 0; font-weight: 900; font-size: 0.95rem; line-height: 1.45; flex: 1; overflow-wrap: anywhere; }
+.price { margin: 2px 4px 8px; font-weight: 900; font-size: 1.05rem; }
+.price small { font-size: 0.72rem; font-weight: 700; color: var(--muted); margin-left: 2px; }
+.stock { margin: 0 4px 8px; font-size: 0.75rem; color: var(--pink-deep); font-weight: 900; }
+.add { width: 100%; border: 0; border-radius: 999px; background: var(--pink-deep); color: #fff; font-weight: 900; padding: 10px 8px; font-size: 0.95rem; }
+.add:active { transform: translateY(1px); }
+.step { display: grid; grid-template-columns: 44px 1fr 44px; align-items: center; background: var(--pink-deep); border-radius: 999px; padding: 3px; color: #fff; font-weight: 900; }
+.step .n { text-align: center; font-size: 1.1rem; font-variant-numeric: tabular-nums; }
+.step button { width: 44px; height: 38px; border: 0; border-radius: 999px; background: #fff; color: var(--pink-deep); font-size: 1.4rem; font-weight: 900; line-height: 1; }
+.step button.minus { background: rgba(255,255,255,.35); color: #fff; }
+.notes { margin: 28px 0 0; padding: 16px 18px; background: var(--card); border-radius: 18px; font-size: 0.85rem; color: var(--muted); }
+.notes p { margin: 0 0 4px; }
+.bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; padding: 10px 12px calc(10px + env(safe-area-inset-bottom)); background: linear-gradient(to top, rgba(230,243,255,1) 70%, rgba(230,243,255,0)); }
+.bar button { width: 100%; max-width: 720px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 0; border-radius: 999px; padding: 14px 20px; background: linear-gradient(90deg, var(--pink-deep), var(--orange)); color: #fff; font-weight: 900; box-shadow: 0 5px 0 rgba(12,27,75,.2); }
+.bar .cnt { font-size: 0.85rem; }
+.bar .cnt b { font-size: 1.3rem; margin-left: 6px; font-variant-numeric: tabular-nums; }
+.bar .amt b { font-size: 1.2rem; font-variant-numeric: tabular-nums; }
+.bar .go { font-size: 1.4rem; }
+dialog { border: 0; padding: 0; background: transparent; width: min(94vw, 560px); max-height: 92vh; overflow: visible; }
+dialog::backdrop { background: rgba(12, 27, 75, 0.6); }
+.sheet { background: #fff; border-radius: 26px; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 8px 0 rgba(12,27,75,.25); }
+.sheet header { padding: 18px 20px 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px; border-bottom: 3px dotted var(--line); }
+.sheet h2 { margin: 0; font-size: 1.2rem; font-weight: 900; letter-spacing: 0.06em; }
+.x { width: 40px; height: 40px; border-radius: 50%; border: 0; background: var(--pale); color: var(--blue-deep); font-size: 1.4rem; font-weight: 900; line-height: 1; }
+.sum { display: flex; justify-content: space-between; padding: 12px 22px; font-weight: 900; background: #FFF9D6; }
+.sum b { font-size: 1.25rem; font-variant-numeric: tabular-nums; }
+.rows { overflow: auto; padding: 4px 20px; flex: 1; min-height: 120px; }
+.row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 12px; align-items: center; padding: 12px 0; border-bottom: 2px dashed var(--line); }
+.row .t { font-weight: 900; overflow-wrap: anywhere; }
+.row .p { font-size: 0.85rem; color: var(--muted); }
+.row .ctl { display: flex; align-items: center; gap: 8px; }
+.row .step { grid-template-columns: 38px 34px 38px; }
+.row .step button { width: 38px; height: 34px; font-size: 1.2rem; }
+.del { border: 0; background: none; color: var(--muted); font-weight: 700; font-size: 0.85rem; text-decoration: underline; padding: 6px; }
+.empty { padding: 36px 8px; text-align: center; color: var(--muted); }
+.foot { padding: 14px 20px 18px; display: grid; gap: 10px; }
+.cta { border: 0; border-radius: 999px; background: var(--pink-deep); color: #fff; font-weight: 900; padding: 15px; font-size: 1.05rem; }
+.cta:disabled { opacity: .4; cursor: default; }
+.ghost { border: 0; background: none; color: var(--muted); font-weight: 700; font-size: 0.85rem; text-decoration: underline; padding: 4px; }
+/* レジ提示画面 */
+.reg { width: min(96vw, 640px); }
+.reg .sheet { border-radius: 22px; }
+.reg .banner { background: var(--blue); color: #fff; text-align: center; padding: 14px 16px; font-weight: 900; letter-spacing: 0.06em; }
+.reg .banner small { display: block; font-weight: 700; opacity: .95; letter-spacing: 0.02em; }
+.reg .rows { padding: 6px 18px; }
+.reg .line { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: baseline; padding: 12px 0; border-bottom: 2px dashed var(--line); }
+.reg .line .t { font-size: 1.15rem; font-weight: 900; overflow-wrap: anywhere; }
+.reg .line .q { font-size: 1.9rem; font-weight: 900; color: var(--pink-deep); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.reg .line .q small { font-size: 0.95rem; color: var(--ink); margin-right: 4px; }
+.reg .total { display: flex; justify-content: space-between; align-items: baseline; padding: 14px 20px; background: #FFF9D6; font-weight: 900; }
+.reg .total .a { font-size: 1.9rem; font-variant-numeric: tabular-nums; }
+.reg .total .a small { font-size: .8rem; margin-left: 4px; color: var(--muted); }
+.reg .note { padding: 8px 20px 0; text-align: center; font-size: 0.8rem; color: var(--muted); }
+@media (max-width: 380px) { .item { padding: 8px 8px 10px; } .name { font-size: 0.88rem; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="wave" viewBox="0 0 1200 40"><path d="M0 22 C100 -2 200 -2 300 22 S500 46 600 22 S800 -2 900 22 S1100 46 1200 22 V40 H0 Z"/></symbol></svg>
+
+<div class="topbar"><div class="in">
+  <a href="./">‹ 告知ページへ</a>
+  <h1>お買い物リスト</h1>
+  <span></span>
+</div></div>
+
+<section class="intro">
+  <div class="in">
+    <p class="lead">買う商品と点数を、あらかじめ決めておこう</p>
+    <p class="sub">当日、レジでこの画面を見せてください。ここでは決済しません。お支払いは当日、PayPayのみです。</p>
+  </div>
+  <span class="wave" aria-hidden="true"><svg viewBox="0 0 1200 40" preserveAspectRatio="none"><use href="#wave"/></svg></span>
+</section>
+
+<main id="catalog" aria-live="polite"></main>
+
+<div class="bar"><button type="button" id="openList" aria-label="お買い物リストを開く">
+  <span class="cnt">合計数量<b id="barCnt">0</b></span>
+  <span class="amt">合計金額 <b id="barAmt">¥0</b> <small>(税込)</small></span>
+  <span class="go" aria-hidden="true">›</span>
+</button></div>
+
+<dialog id="listDlg" aria-label="お買い物リスト">
+  <div class="sheet">
+    <header><h2>お買い物リスト</h2><button class="x" type="button" data-close aria-label="閉じる">×</button></header>
+    <div class="sum"><span>合計数量 <b id="sCnt">0</b></span><span>合計金額 <b id="sAmt">¥0</b> <small>(税込)</small></span></div>
+    <div class="rows" id="listRows"></div>
+    <div class="foot">
+      <button class="cta" type="button" id="toReg">レジで見せる画面を開く</button>
+      <button class="ghost" type="button" id="clearAll">リストをすべて空にする</button>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="regDlg" class="reg" aria-label="レジ提示用">
+  <div class="sheet">
+    <div class="banner">お買い物リスト<small>レジでこの画面をお見せください(お支払いはPayPayのみ)</small></div>
+    <div class="rows" id="regRows"></div>
+    <div class="total"><span>合計 <b id="rCnt">0</b> 点</span><span class="a" id="rAmt">¥0<small>(税込)</small></span></div>
+    <p class="note">この画面は事前のメモです。ご購入の確定はレジで行います。在庫状況によりご希望の商品をお渡しできない場合があります。</p>
+    <div class="foot"><button class="cta" type="button" data-close>リストに戻る</button></div>
+  </div>
+</dialog>
+
+<script>
+/* 商品の編集はここだけ。image に画像のパス(例 "img/bath.png")を入れると表示されます。 */
+var SECTIONS = [
+  { title: "あったマリン", items: [
+    { id: "bathsalt", name: "ゆわぁ〜の香り バスソルト", price: 800, isNew: true, image: "" },
+    { id: "stickerCreatures", name: "生きものたちのステッカー", price: 330, isNew: true, image: "" }
+  ]},
+  { title: "社報誌 WAKE", items: [
+    { id: "wake2026summer", name: "社報誌WAKE 2026夏号", price: 800, isNew: true, image: "" },
+    { id: "wake2026spring", name: "社報誌WAKE 2026春号", price: 800, image: "" },
+    { id: "wake2025winter", name: "社報誌WAKE 2025冬号", price: 800, image: "" }
+  ]},
+  { title: "ノルカソルカ", items: [
+    { id: "denimCap", name: "デニムキャップ", price: 3900, isNew: true, image: "" },
+    { id: "tumbler", name: "ロゴタンブラー", price: 4900, isNew: true, image: "" },
+    { id: "parka", name: "パーカー", price: 11000, stock: "前回イベントの在庫の残り・若干数のみ", image: "" },
+    { id: "sweatPants", name: "スウェットパンツ", price: 8800, stock: "前回イベントの在庫の残り・若干数のみ", image: "" },
+    { id: "randomSticker", name: "ランダムステッカー", price: 330, image: "" }
+  ]},
+  { title: "ロゴグッズ", items: [
+    { id: "logoSticker", name: "ロゴステッカー", price: 300, image: "" }
+  ]}
+];
+var KEY = "studioluca-bunfuri43-list", MAX = 99;
+var items = {}; SECTIONS.forEach(function (s) { s.items.forEach(function (i) { items[i.id] = i; }); });
+var qty = {};
+try { var saved = JSON.parse(localStorage.getItem(KEY) || "{}"); Object.keys(saved).forEach(function (k) { if (items[k] && saved[k] > 0) qty[k] = Math.min(MAX, saved[k] | 0); }); } catch (e) {}
+function save() { try { localStorage.setItem(KEY, JSON.stringify(qty)); } catch (e) {} }
+function yen(n) { return "¥" + n.toLocaleString("ja-JP"); }
+function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+function totals() { var c = 0, a = 0; Object.keys(qty).forEach(function (k) { c += qty[k]; a += qty[k] * items[k].price; }); return { c: c, a: a }; }
+function set(id, n) { n = Math.max(0, Math.min(MAX, n)); if (n) qty[id] = n; else delete qty[id]; save(); render(); }
+function stepHtml(id) { return '<div class="step"><button class="minus" type="button" data-act="dec" data-id="' + id + '" aria-label="1つ減らす">−</button><span class="n">' + qty[id] + '</span><button type="button" data-act="inc" data-id="' + id + '" aria-label="1つ増やす">＋</button></div>'; }
+function renderCatalog() {
+  var h = "";
+  SECTIONS.forEach(function (s) {
+    h += '<h2 class="h2">' + esc(s.title) + '</h2><div class="grid">';
+    s.items.forEach(function (i) {
+      var on = !!qty[i.id];
+      h += '<article class="item' + (on ? " on" : "") + '"><div class="thumb">' + (i.isNew ? '<span class="new">NEW</span>' : "") + (i.image ? '<img src="' + esc(i.image) + '" alt="' + esc(i.name) + '">' : "") + '</div>' +
+        '<p class="name">' + esc(i.name) + '</p><p class="price">' + yen(i.price) + '<small>(税込)</small></p>' + (i.stock ? '<p class="stock">' + esc(i.stock) + '</p>' : "") +
+        (on ? stepHtml(i.id) : '<button class="add" type="button" data-act="add" data-id="' + i.id + '">リストに追加</button>') + '</article>';
+    });
+    h += "</div>";
+  });
+  h += '<div class="notes"><p>・価格はすべて税込です。内容は変更・完売となる場合があります。</p><p>・このリストは事前のメモです。決済はせず、購入の確定は当日のレジで行います。</p><p>・リストはこのスマホ内に保存されます(ブラウザのデータを消すと消えます)。</p></div>';
+  document.getElementById("catalog").innerHTML = h;
+}
+function renderList() {
+  var keys = Object.keys(qty), h = "";
+  if (!keys.length) h = '<p class="empty">まだ商品が入っていません。<br>商品の「リストに追加」を押してください。</p>';
+  keys.forEach(function (k) { var i = items[k]; h += '<div class="row"><div><div class="t">' + esc(i.name) + '</div><div class="p">' + yen(i.price) + '(税込)</div></div><div class="ctl">' + stepHtml(k) + '</div><div></div><div style="text-align:right"><button class="del" type="button" data-act="del" data-id="' + k + '">削除</button></div></div>'; });
+  document.getElementById("listRows").innerHTML = h;
+  document.getElementById("toReg").disabled = !keys.length;
+}
+function renderReg() {
+  var h = "", keys = Object.keys(qty), t = totals();
+  keys.forEach(function (k) { h += '<div class="line"><span class="t">' + esc(items[k].name) + '</span><span class="q"><small>×</small>' + qty[k] + '</span></div>'; });
+  document.getElementById("regRows").innerHTML = h;
+  document.getElementById("rCnt").textContent = t.c;
+  document.getElementById("rAmt").innerHTML = yen(t.a) + "<small>(税込)</small>";
+}
+function render() {
+  var t = totals();
+  renderCatalog(); renderList();
+  ["barCnt", "sCnt"].forEach(function (i) { document.getElementById(i).textContent = t.c; });
+  ["barAmt", "sAmt"].forEach(function (i) { document.getElementById(i).textContent = yen(t.a); });
+  if (document.getElementById("regDlg").open) renderReg();
+}
+document.addEventListener("click", function (e) {
+  var b = e.target.closest("[data-act]");
+  if (b) { var id = b.dataset.id, a = b.dataset.act; if (a === "add") set(id, 1); else if (a === "inc") set(id, (qty[id] || 0) + 1); else if (a === "dec") set(id, (qty[id] || 0) - 1); else if (a === "del") set(id, 0); return; }
+  if (e.target.closest("[data-close]")) { var d = e.target.closest("dialog"); if (d) d.close(); return; }
+  if (e.target.tagName === "DIALOG") e.target.close();
+});
+function open(d) { if (d.showModal) d.showModal(); else d.setAttribute("open", ""); }
+var listDlg = document.getElementById("listDlg"), regDlg = document.getElementById("regDlg");
+document.getElementById("openList").addEventListener("click", function () { open(listDlg); });
+document.getElementById("toReg").addEventListener("click", function () { renderReg(); listDlg.close(); open(regDlg); });
+var clearBtn = document.getElementById("clearAll"), clearTimer;
+clearBtn.addEventListener("click", function () {
+  if (clearBtn.dataset.arm) { qty = {}; save(); render(); clearBtn.textContent = "リストをすべて空にする"; delete clearBtn.dataset.arm; clearTimeout(clearTimer); return; }
+  clearBtn.dataset.arm = "1"; clearBtn.textContent = "もう一度押すと、すべて空になります";
+  clearTimer = setTimeout(function () { clearBtn.textContent = "リストをすべて空にする"; delete clearBtn.dataset.arm; }, 3500);
+});
+render();
+</script>
+</body>
+</html>
