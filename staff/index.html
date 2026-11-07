@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#1F8FF5">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Lucaレジ">
+<title>スタッフ用レジ｜StudioLuca 文学フリマ</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<style>
+/* 配色はお客さん用の order.html に合わせています。オフラインで崩れないよう端末内のフォントを使います。 */
+:root {
+  --blue: #1F8FF5; --blue-deep: #0B63C9; --pink-deep: #E8479F; --orange: #FF7A1A;
+  --pale: #E6F3FF; --ink: #0C1B4B; --muted: #4A5A86; --line: #BFDDFA;
+  color-scheme: light;
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; margin: 0; overflow: hidden; overscroll-behavior: none; }
+body {
+  position: fixed; inset: 0; display: grid; grid-template-rows: auto minmax(0, 1fr);
+  background: var(--pale); color: var(--ink);
+  font-family: "Hiragino Maru Gothic ProN", "Hiragino Sans", "Yu Gothic", sans-serif; font-weight: 700; line-height: 1.25;
+  -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; touch-action: manipulation;
+}
+button { font: inherit; color: inherit; border: 0; padding: 0; background: none; cursor: pointer; touch-action: manipulation; }
+.head {
+  background: var(--blue); color: #fff;
+  padding: calc(env(safe-area-inset-top) + 8px) calc(env(safe-area-inset-right) + 12px) 10px calc(env(safe-area-inset-left) + 12px);
+  display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 8px; align-items: center;
+}
+.sum { min-width: 0; height: 56px; display: flex; flex-direction: column; justify-content: center; }
+.sum .amt { font-size: 2rem; font-weight: 900; font-variant-numeric: tabular-nums; line-height: 1.1; white-space: nowrap; }
+.sum .meta { font-size: .75rem; white-space: nowrap; }
+.sum .meta b { font-size: .95rem; font-variant-numeric: tabular-nums; }
+.undo { display: none; align-items: center; justify-content: space-between; gap: 8px; height: 56px; font-size: .95rem; }
+.undo button { background: #fff; color: var(--blue-deep); font-weight: 900; border-radius: 999px; padding: 0 14px; height: 44px; font-size: .95rem; white-space: nowrap; }
+.head.undoing .sum { display: none; }
+.head.undoing .undo { display: flex; }
+.clear, .zoom {
+  height: 56px; padding: 0 10px; border-radius: 999px; font-size: .9rem; font-weight: 900; white-space: nowrap; box-shadow: 0 3px 0 rgba(12,27,75,.25);
+}
+.clear { background: #fff; color: var(--blue-deep); }
+.zoom { background: linear-gradient(90deg, var(--pink-deep), var(--orange)); color: #fff; }
+.clear:active, .zoom:active { transform: translateY(2px); box-shadow: none; }
+.clear:disabled, .zoom:disabled { background: rgba(255,255,255,.3); color: #fff; box-shadow: none; }
+.grid {
+  min-height: 0; display: grid; gap: 6px;
+  grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-rows: repeat(4, minmax(0, 1fr));
+  padding: 8px calc(env(safe-area-inset-right) + 8px) calc(env(safe-area-inset-bottom) + 8px) calc(env(safe-area-inset-left) + 8px);
+}
+.item { position: relative; min-width: 0; min-height: 0; }
+.tap {
+  width: 100%; height: 100%; display: flex; flex-direction: column; background: #fff; border-radius: 14px; padding: 4px 4px 5px;
+  box-shadow: 0 3px 0 rgba(12,27,75,.12); text-align: center; overflow: hidden;
+}
+.tap:active { transform: translateY(1px); background: #FFF0F9; }
+.item.on .tap { outline: 3px solid var(--pink-deep); outline-offset: -3px; }
+.thumb { flex: 1; min-height: 0; position: relative; }
+.thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+.name { display: block; margin-top: 2px; font-size: .72rem; font-weight: 900; line-height: 1.15; min-height: 2.3em; overflow-wrap: anywhere; }
+.price { display: block; font-size: .8rem; font-weight: 900; color: var(--muted); font-variant-numeric: tabular-nums; }
+.qty {
+  position: absolute; top: 4px; right: 4px; min-width: 30px; height: 30px; padding: 0 7px; border-radius: 999px; pointer-events: none;
+  background: var(--pink-deep); color: #fff; font-size: 1.1rem; font-weight: 900; display: grid; place-items: center; font-variant-numeric: tabular-nums;
+}
+.minus {
+  position: absolute; top: 0; left: 0; width: 44px; height: 44px; display: grid; place-items: start; padding: 4px;
+}
+.minus span {
+  width: 30px; height: 30px; border-radius: 50%; background: var(--ink); color: #fff; font-size: 1.3rem; font-weight: 900; line-height: 1; display: grid; place-items: center;
+}
+.minus:active span { background: var(--blue-deep); }
+dialog { border: 0; padding: 0; background: transparent; color: var(--ink); width: min(94vw, 640px); max-width: none; overflow: visible; }
+dialog::backdrop { background: rgba(12, 27, 75, 0.6); }
+.big { background: #fff; border-radius: 26px; overflow: hidden; box-shadow: 0 8px 0 rgba(12,27,75,.25); text-align: center; }
+.big .label { background: var(--blue); color: #fff; padding: 14px 16px; font-size: 1.2rem; font-weight: 900; letter-spacing: .06em; }
+.big .value { background: #FFF9D6; padding: 36px 12px; }
+.big .num { display: block; font-size: 120px; font-weight: 900; line-height: 1.1; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.big .sub { display: block; margin-top: 10px; font-size: 1.15rem; color: var(--muted); }
+.big .sub b { font-size: 1.4rem; color: var(--ink); }
+.big .close { display: block; width: calc(100% - 32px); margin: 16px; height: 56px; border-radius: 999px; background: var(--pale); color: var(--blue-deep); font-size: 1.05rem; font-weight: 900; }
+@media (orientation: landscape) {
+  .grid { grid-template-columns: repeat(8, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); }
+}
+</style>
+</head>
+<body>
+<header class="head" id="head">
+  <div class="sum">
+    <div class="amt" id="amt">¥0</div>
+    <div class="meta">合計 <b id="cnt">0</b> 点(税込)</div>
+  </div>
+  <div class="undo"><span>空にしました</span><button type="button" id="undo">元に戻す</button></div>
+  <button class="zoom" type="button" id="zoom" disabled>金額拡大</button>
+  <button class="clear" type="button" id="clear" disabled>会計完了</button>
+</header>
+<main class="grid" id="grid"></main>
+
+<dialog id="bigDlg" aria-label="合計金額">
+  <div class="big">
+    <div class="label">合計金額</div>
+    <div class="value">
+      <span class="num" id="bigAmt">¥0</span>
+      <span class="sub"><b id="bigCnt">0</b> 点(税込)</span>
+    </div>
+    <button class="close" type="button">閉じる</button>
+  </div>
+</dialog>
+
+<script>
+/* 商品の編集はここだけ。id・価格・画像は ../order.html と揃えています。価格を変えるときは両方を直し、sw.js の VERSION も上げてください。 */
+var ITEMS = [
+  { id: "bathsalt", name: "バスソルト", price: 800, image: "../img/bathsalt.webp" },
+  { id: "wake2026summer", name: "WAKE 2026夏", price: 800, image: "../img/wake2026summer.webp" },
+  { id: "wake2026spring", name: "WAKE 2026春", price: 800, image: "../img/wake2026spring.webp" },
+  { id: "wake2025winter", name: "WAKE 2025冬", price: 800, image: "../img/wake2025winter.webp" },
+  { id: "harisenNormal", name: "ハリセン ノーマル", price: 330, image: "../img/harisenNormal.webp" },
+  { id: "mizunoNormal", name: "ミズノ ノーマル", price: 330, image: "../img/mizunoNormal.webp" },
+  { id: "olNormal", name: "オルくん ノーマル", price: 330, image: "../img/olNormal.webp" },
+  { id: "randomSticker", name: "ランダム ステッカー", price: 330, image: "../img/randomSticker.webp" },
+  { id: "harisenYuwaa", name: "ハリセン ゆわぁ～", price: 330, image: "../img/harisenYuwaa.webp" },
+  { id: "mizunoYuwaa", name: "ミズノ ゆわぁ～", price: 330, image: "../img/mizunoYuwaa.webp" },
+  { id: "olYuwaa", name: "オルくん ゆわぁ～", price: 330, image: "../img/olYuwaa.webp" },
+  { id: "logoSticker", name: "ロゴ ステッカー", price: 300, image: "../img/logoSticker.webp" },
+  { id: "denimCap", name: "デニム キャップ", price: 3900, image: "../img/denimCap.webp" },
+  { id: "tumbler", name: "ロゴ タンブラー", price: 4900, image: "../img/tumbler.webp" },
+  { id: "parka", name: "パーカー", price: 11000, image: "../img/parka.webp" },
+  { id: "sweatPants", name: "スウェット パンツ", price: 8800, image: "../img/sweatPants.webp" }
+];
+var KEY = "studioluca-bunfuri43-staff", MAX = 99, UNDO_MS = 6000;
+var $ = function (id) { return document.getElementById(id); };
+var byId = {}, qty = {}, undoQty = null, undoTimer;
+ITEMS.forEach(function (i) { byId[i.id] = i; });
+try {
+  var saved = JSON.parse(localStorage.getItem(KEY) || "{}");
+  Object.keys(saved).forEach(function (k) { if (byId[k] && saved[k] > 0) qty[k] = Math.min(MAX, saved[k] | 0); });
+} catch (e) {}
+function save() { try { localStorage.setItem(KEY, JSON.stringify(qty)); } catch (e) {} }
+function yen(n) { return "¥" + n.toLocaleString("ja-JP"); }
+
+$("grid").innerHTML = ITEMS.map(function (i) {
+  return '<div class="item" data-item="' + i.id + '"><button class="tap" type="button" data-act="inc" aria-label="' + i.name + 'を1つ追加">' +
+    '<span class="thumb"><img src="' + i.image + '" alt="" draggable="false"></span><span class="name">' + i.name.replace(" ", "<br>") + '</span><span class="price">' + yen(i.price) + '</span></button></div>';
+}).join("");
+
+function render() {
+  var c = 0, a = 0;
+  ITEMS.forEach(function (i) {
+    var n = qty[i.id] || 0, el = document.querySelector('[data-item="' + i.id + '"]');
+    c += n; a += n * i.price;
+    el.classList.toggle("on", n > 0);
+    var q = el.querySelector(".qty"), m = el.querySelector(".minus");
+    if (n && !q) {
+      el.insertAdjacentHTML("beforeend", '<span class="qty"></span><button class="minus" type="button" data-act="dec" aria-label="' + i.name + 'を1つ減らす"><span>−</span></button>');
+      q = el.querySelector(".qty");
+    } else if (!n && q) { q.remove(); m.remove(); }
+    if (q) q.textContent = n;
+  });
+  $("amt").textContent = yen(a);
+  $("cnt").textContent = c;
+  $("clear").disabled = $("zoom").disabled = !c;
+}
+function endUndo() { undoQty = null; clearTimeout(undoTimer); $("head").classList.remove("undoing"); }
+
+$("grid").addEventListener("click", function (e) {
+  var b = e.target.closest("[data-act]"); if (!b) return;
+  var id = b.closest("[data-item]").dataset.item, n = qty[id] || 0;
+  n = b.dataset.act === "inc" ? Math.min(MAX, n + 1) : n - 1;
+  if (n > 0) qty[id] = n; else delete qty[id];
+  endUndo(); save(); render();
+});
+$("clear").addEventListener("click", function () {
+  undoQty = qty; qty = {}; save(); render();
+  $("head").classList.add("undoing");
+  clearTimeout(undoTimer); undoTimer = setTimeout(endUndo, UNDO_MS);
+});
+$("undo").addEventListener("click", function () {
+  qty = undoQty || {}; endUndo(); save(); render();
+});
+/* 金額拡大:枠の幅いっぱいに収まる文字サイズへ調整する */
+var bigDlg = $("bigDlg"), BIG_MAX = 120;
+function fitBig() {
+  var el = $("bigAmt"), box = el.parentNode, room = box.clientWidth - 24;
+  el.style.fontSize = BIG_MAX + "px"; el.style.display = "inline-block";
+  var w = el.getBoundingClientRect().width;
+  el.style.display = "";
+  if (w > room) el.style.fontSize = Math.floor(BIG_MAX * room / w) + "px";
+}
+$("zoom").addEventListener("click", function () {
+  $("bigAmt").textContent = $("amt").textContent;
+  $("bigCnt").textContent = $("cnt").textContent;
+  bigDlg.showModal(); fitBig();
+});
+bigDlg.addEventListener("click", function () { bigDlg.close(); });
+window.addEventListener("resize", function () { if (bigDlg.open) fitBig(); });
+/* ダブルタップの拡大とピンチ操作を止める */
+document.addEventListener("gesturestart", function (e) { e.preventDefault(); });
+render();
+
+/* オフライン用にページと画像を端末へ保存する。更新を受け取ったら開き直す */
+if ("serviceWorker" in navigator) {
+  var hadWorker = !!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener("controllerchange", function () { if (hadWorker) location.reload(); });
+  navigator.serviceWorker.register("sw.js").catch(function () {});
+  if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(function () {});
+}
+</script>
+</body>
+</html>
