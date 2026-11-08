@@ -272,6 +272,16 @@ a { color: inherit; }
 .map-box h3 { margin: 0 44px 8px 4px; font-size: 1rem; color: var(--ink); }
 .map-box img { display: block; width: 100%; height: auto; border-radius: 10px; border: 2px solid var(--line); }
 .map-box p { margin: 8px 4px 0; font-size: 0.8rem; color: var(--muted); }
+.spot { padding-block: 64px 72px; text-align: center; }
+.spot .btn { border-color: var(--blue); }
+.confirm-box { background: #fff; border-radius: 22px; padding: 28px 22px 22px; text-align: center; box-shadow: 0 8px 0 rgba(12,27,75,.25); }
+.confirm-box p { margin: 0 0 20px; font-weight: 900; font-size: 1.1rem; color: var(--ink); }
+.confirm-box .row { display: flex; gap: 10px; justify-content: center; }
+.confirm-box button { font: inherit; font-weight: 900; border: 0; border-radius: 999px; min-height: 48px; padding: 0 24px; cursor: pointer; flex: 1; max-width: 180px; }
+.confirm-box .yes { background: var(--blue); color: #fff; }
+.confirm-box .no { background: var(--pale); color: var(--blue-deep); }
+#spotConfirm { max-width: min(90vw, 400px); }
+#spotAnswer .map-box img { width: auto; max-width: 100%; max-height: calc(92vh - 28px); margin: 0 auto; }
 .map-close { position: absolute; top: 10px; right: 10px; width: 36px; height: 36px; border-radius: 50%; border: 0; background: var(--blue); color: #fff; font-size: 1.3rem; font-weight: 900; line-height: 1; cursor: pointer; }
 /* お品書き画像・入浴剤ピックアップ */
 .menu-img { aspect-ratio: 3509 / 2481; border-radius: 16px; border: 0; overflow: hidden; }
@@ -447,6 +457,14 @@ a { color: inherit; }
       </div>
     </div>
   </section>
+
+  <!-- 間違い探しの答え -->
+  <section class="band b-white spot" id="spot">
+    <span class="wave" aria-hidden="true"><svg viewBox="0 0 1200 40" preserveAspectRatio="none"><use href="#wave"/></svg></span>
+    <div class="inner">
+      <button class="btn blue" type="button" id="spotBtn">間違い探しの答え</button>
+    </div>
+  </section>
 </main>
 <dialog class="map-dialog" id="mapDialog" aria-label="会場配置図">
   <div class="map-box">
@@ -456,6 +474,28 @@ a { color: inherit; }
     <p>オレンジの枠が StudioLuca(Y-15,16)です。画像は文学フリマ東京事務局の配置図に印を付けたものです。</p>
   </div>
 </dialog>
+<dialog class="map-dialog" id="spotConfirm" aria-label="確認">
+  <div class="confirm-box">
+    <p>本当に表示しますか？</p>
+    <div class="row"><button class="no" type="button" data-spot="no">やめる</button><button class="yes" type="button" data-spot="yes">表示する</button></div>
+  </div>
+</dialog>
+<dialog class="map-dialog" id="spotAnswer" aria-label="間違い探しの答え">
+  <div class="map-box">
+    <button class="map-close" type="button" aria-label="閉じる" data-spot="close">×</button>
+    <img id="spotImg" alt="間違い探しの答え" width="2048" height="2048">
+  </div>
+</dialog>
+<script>
+/* 間違い探しの答え:確認してから表示する。画像は表示するときに初めて読み込む */
+(function(){var c=document.getElementById('spotConfirm'),a=document.getElementById('spotAnswer'),img=document.getElementById('spotImg');
+function show(d){if(d.showModal)d.showModal();else d.setAttribute('open','');}
+document.getElementById('spotBtn').addEventListener('click',function(){show(c);});
+[c,a].forEach(function(d){d.addEventListener('click',function(e){
+  var k=e.target.closest('[data-spot]');k=k&&k.getAttribute('data-spot');
+  if(k==='yes'){c.close();if(!img.getAttribute('src'))img.src='img/spot-answer.png';show(a);}
+  else if(k||e.target===d)d.close();});});})();
+</script>
 <script>
 (function(){var d=document.getElementById('mapDialog');if(!d)return;
 document.querySelectorAll('.map-btn').forEach(function(b){b.addEventListener('click',function(){if(d.showModal)d.showModal();else d.setAttribute('open','');});});
