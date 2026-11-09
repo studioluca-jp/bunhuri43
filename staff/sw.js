@@ -1,5 +1,5 @@
 /* ファイルや価格を変えたら VERSION を上げること。オンラインで開き直すと新しい内容に入れ替わります。 */
-var VERSION = "4";
+var VERSION = "5";
 var PREFIX = "bunhuri43-staff-";
 var CACHE = PREFIX + VERSION;
 var FILES = [
